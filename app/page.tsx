@@ -1,65 +1,241 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import trio from "@/public/assets/images/trio-barca.webp";
+import Navigation from "./components/Navigation";
+import React from "react";
+import About from "./components/About";
+import type {} from "gsap/ScrollTrigger";
+import ScrollVelocity from "@/components/ScrollVelocity";
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showNav, setShowNav] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const animationFrameRef = useRef<number>();
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // iOS video activation helper
+    const once = (el: HTMLElement | Document, event: string, fn: EventListener) => {
+      const onceFn = (e: Event) => {
+        el.removeEventListener(event, onceFn);
+        fn(e);
+      };
+      el.addEventListener(event, onceFn);
+      return onceFn;
+    };
+
+    // Activate video on iOS
+    once(document.documentElement, "touchstart", () => {
+      video.play();
+      video.pause();
+    });
+
+    // Setup ultra-smooth ScrollTrigger animation
+    const setupScrollTrigger = () => {
+      // Kill any existing ScrollTriggers
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+      let targetTime = 0;
+      let currentTime = 0;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.5, // Lebih responsive untuk video pendek
+          pin: false,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onEnter: () => setShowNav(false),
+          onLeave: () => setShowNav(true),
+          onEnterBack: () => setShowNav(false),
+          onLeaveBack: () => setShowNav(true),
+          markers: false,
+          refreshPriority: 1,
+        },
+      });
+
+      // Animate menggunakan dummy object untuk kontrol yang lebih smooth
+      const obj = { progress: 0 };
+
+      tl.to(obj, {
+        progress: 1,
+        ease: "none",
+        duration: 1,
+        onUpdate: function () {
+          targetTime = this.progress() * video.duration;
+        },
+      });
+
+      // RequestAnimationFrame untuk interpolasi smooth
+      const updateVideoTime = () => {
+        if (!video) return;
+
+        // Smooth lerp (linear interpolation) untuk menghindari jitter
+        const lerpFactor = 0.1; // Semakin kecil = semakin smooth
+        currentTime += (targetTime - currentTime) * lerpFactor;
+
+        // Update video time hanya jika perbedaannya signifikan
+        if (Math.abs(video.currentTime - currentTime) > 0.02) {
+          video.currentTime = currentTime;
+        }
+
+        animationFrameRef.current = requestAnimationFrame(updateVideoTime);
+      };
+
+      updateVideoTime();
+      setIsVideoLoaded(true);
+    };
+
+    // Handle video metadata load
+    const handleMetadataLoad = () => {
+      setupScrollTrigger();
+    };
+
+    // Handle video can play through
+    const handleCanPlayThrough = () => {
+      setIsVideoLoaded(true);
+    };
+
+    if (video.readyState >= 1) {
+      setupScrollTrigger();
+    } else {
+      video.addEventListener("loadedmetadata", handleMetadataLoad);
+      video.addEventListener("canplaythrough", handleCanPlayThrough);
+    }
+
+    // Optimize video loading with blob
+    const src = video.currentSrc || video.src;
+    const loadAsBlob = async () => {
+      if ((window.fetch as any) && src) {
+        try {
+          const response = await fetch(src);
+          const blob = await response.blob();
+          const blobURL = URL.createObjectURL(blob);
+          const currentTime = video.currentTime;
+
+          once(document.documentElement, "touchstart", () => {
+            video.play();
+            video.pause();
+          });
+
+          video.src = blobURL;
+          video.currentTime = currentTime + 0.01;
+          return blobURL;
+        } catch (err) {
+          console.error("Error loading video blob:", err);
+        }
+      }
+      return null;
+    };
+
+    let blobURL: string | null = null;
+    const blobTimeout = setTimeout(async () => {
+      blobURL = await loadAsBlob();
+    }, 1000);
+
+    // Cleanup function
+    return () => {
+      clearTimeout(blobTimeout);
+      if (blobURL) {
+        URL.revokeObjectURL(blobURL);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      video.removeEventListener("loadedmetadata", handleMetadataLoad);
+      video.removeEventListener("canplaythrough", handleCanPlayThrough);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Navigation show={showNav} />
+
+      {/* Video Scroll Section */}
+      <div ref={containerRef} className="relative" style={{ height: "450vh" }}>
+        <div className="sticky top-0 h-screen w-screen overflow-hidden bg-black">
+          {!isVideoLoaded && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+              <div className="flex flex-col items-center gap-4">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-secondary border-t-transparent"></div>
+                <p className="text-sm text-white/80">Loading video...</p>
+              </div>
+            </div>
+          )}
+
+          <video
+            ref={videoRef}
+            src="/assets/videos/camp-nou-25.mp4"
+            muted
+            playsInline
+            className="h-full w-full object-cover transition-opacity duration-700"
+            style={{
+              opacity: isVideoLoaded ? 1 : 0.3,
+              transform: "translateZ(0)",
+              willChange: "transform",
+            }}
+            preload="auto"
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            controls={false}
+            disablePictureInPicture
+            controlsList="nodownload noplaybackrate"
+            crossOrigin="anonymous"
+          />
+
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* Hero Section */}
+      <section id="trio-hero" className="relative h-screen overflow-hidden">
+        <Image src={trio} alt="Barca" fill priority className="object-cover" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-primary" />
+        <div className="relative z-10 flex h-full items-end justify-center pb-24 text-white">
+          <ScrollVelocity texts={["FC Barcelona", "Crazy Season"]} velocity={70} className="custom-scroll-text" />
         </div>
-      </main>
-    </div>
+      </section>
+      <About />
+
+      <style jsx>{`
+        @keyframes fade-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-up {
+          animation: fade-up 1s ease-out 0.3s forwards;
+          opacity: 0;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        video {
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+        }
+      `}</style>
+    </>
   );
 }
