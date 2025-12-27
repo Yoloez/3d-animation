@@ -10,6 +10,7 @@ import React from "react";
 import About from "./components/About";
 import type {} from "gsap/ScrollTrigger";
 import ScrollVelocity from "@/components/ScrollVelocity";
+import Logo from "./components/Logo";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -165,7 +166,7 @@ export default function Home() {
       <Navigation show={showNav} />
 
       {/* Video Scroll Section */}
-      <div ref={containerRef} className="relative" style={{ height: "450vh" }}>
+      <div ref={containerRef} className="relative" style={{ height: "250vh" }}>
         <div className="sticky top-0 h-screen w-screen overflow-hidden bg-black">
           {!isVideoLoaded && (
             <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -178,7 +179,7 @@ export default function Home() {
 
           <video
             ref={videoRef}
-            src="/assets/videos/camp-nou-25.mp4"
+            src="/assets/videos/try-again.mp4"
             muted
             playsInline
             className="h-full w-full object-cover transition-opacity duration-700"
@@ -209,6 +210,7 @@ export default function Home() {
         </div>
       </section>
       <About />
+      {/* <Logo /> */}
 
       <style jsx>{`
         @keyframes fade-up {
