@@ -47,6 +47,27 @@ const cardData = [
     staticImage: "/assets/images/vs-madrid-4-3.webp",
     youtubeEmbedId: "fra9Ps3xzKM",
   },
+  {
+    id: 6,
+    title: "vs Inter Milan 1st Leg (3-3)",
+    description: "Relive the best moments from the match.",
+    staticImage: "/assets/images/vs-inter-milan.webp",
+    youtubeEmbedId: "tg-MWRmAJqE",
+  },
+  {
+    id: 7,
+    title: "vs Inter Milan 2nd Leg (3-4)",
+    description: "Relive the best moments from the match.",
+    staticImage: "/assets/images/lose-inter-milan.webp",
+    youtubeEmbedId: "aNiPmGUpQC0",
+  },
+  {
+    id: 8,
+    title: "vs Real Madrid (0-4)",
+    description: "Relive the best moments from the match.",
+    staticImage: "/assets/images/vs-madrid-4-0.webp",
+    youtubeEmbedId: "AfpItQBKl04",
+  },
 ];
 
 // Modal Component
@@ -136,7 +157,7 @@ function HoverCard({ title, description, staticImage, youtubeEmbedId, onClick }:
 }
 
 // Main Component
-export default function Logo() {
+export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (isScrolling: boolean) => void }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<(typeof cardData)[0] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -161,7 +182,7 @@ export default function Logo() {
       const tween = gsap.to(cards, {
         x: getScrollAmount,
         ease: "none",
-        duration: 1,
+        duration: 3,
       });
 
       // Create ScrollTrigger with proper end calculation
@@ -174,6 +195,10 @@ export default function Logo() {
         animation: tween,
         invalidateOnRefresh: true,
         anticipatePin: 1,
+        onEnter: () => onScrollStateChange?.(false),
+        onLeave: () => onScrollStateChange?.(true),
+        onEnterBack: () => onScrollStateChange?.(false),
+        onLeaveBack: () => onScrollStateChange?.(true),
       });
     };
 
@@ -202,11 +227,11 @@ export default function Logo() {
         {/* Header dengan gradient */}
 
         {/* Horizontal scrolling cards container */}
-        <div ref={cardsRef} className="absolute top-0 left-0 h-full flex items-center gap-8 px-8" style={{ willChange: "transform" }}>
+        <div ref={cardsRef} className=" top-0 left-0 h-full flex items-center right-10 gap-8 px-8" style={{ willChange: "transform" }}>
           {cardData.map((card, index) => (
             <div
               key={card.id}
-              className="flex-shrink-0"
+              className="shrink-0"
               style={{
                 width: "clamp(300px, 80vw, 500px)",
                 animationDelay: `${index * 0.1}s`,
@@ -217,7 +242,7 @@ export default function Logo() {
           ))}
 
           {/* End spacer */}
-          <div className="flex-shrink-0 w-8" />
+          <div className="shrink-0 w-8" />
         </div>
 
         {/* Scroll indicator */}

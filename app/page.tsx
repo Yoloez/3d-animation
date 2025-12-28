@@ -11,6 +11,8 @@ import About from "./components/About";
 import type {} from "gsap/ScrollTrigger";
 import ScrollVelocity from "@/components/ScrollVelocity";
 import Logo from "./components/Logo";
+import Standings from "./components/Standings";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -179,7 +181,7 @@ export default function Home() {
 
           <video
             ref={videoRef}
-            src="/assets/videos/try-again.mp4"
+            src="/assets/videos/camp-nou-timelapse.mp4"
             muted
             playsInline
             className="h-full w-full object-cover transition-opacity duration-700"
@@ -196,7 +198,6 @@ export default function Home() {
             controlsList="nodownload noplaybackrate"
             crossOrigin="anonymous"
           />
-
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
         </div>
       </div>
@@ -209,7 +210,9 @@ export default function Home() {
           <ScrollVelocity texts={["FC Barcelona", "Crazy Season"]} velocity={70} className="custom-scroll-text" />
         </div>
       </section>
-      <About />
+      <About onScrollStateChange={setShowNav} />
+      <Standings />
+      <BackgroundMusic />
       {/* <Logo /> */}
 
       <style jsx>{`
@@ -227,10 +230,6 @@ export default function Home() {
         .animate-fade-up {
           animation: fade-up 1s ease-out 0.3s forwards;
           opacity: 0;
-        }
-
-        html {
-          scroll-behavior: smooth;
         }
 
         video {

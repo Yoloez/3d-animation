@@ -88,6 +88,23 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  font-family: var(--font-poppins);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize for smooth scrolling */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for transforms */
+[style*="transform"] {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Scrollbar width */
@@ -97,7 +114,7 @@ body {
 
 /* Track (background scrollbar) */
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: transparent;
 }
 
 /* Thumb (yang bisa digeser) */
