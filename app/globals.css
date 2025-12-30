@@ -7,6 +7,7 @@
   --primary: oklch(0.208 0.042 265.755);
   --secondary: #fcc52b;
   --accent: #990040;
+  --third: #c6f9ad;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -45,6 +46,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+  --color-third: var(--third);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -114,14 +116,14 @@ html {
 
 /* Track (background scrollbar) */
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--primary);
 }
 
 /* Thumb (yang bisa digeser) */
 ::-webkit-scrollbar-thumb {
   background-color: var(--secondary);
   border-radius: 9999px;
-  border: 2px solid var(--background);
+  border: 2px solid var(--accent);
 }
 
 /* Hover effect */

@@ -21,11 +21,11 @@ export default function BackgroundMusic() {
   return (
     <>
       <audio ref={audioRef} loop>
-        <source src="/audio/backsound.mp3" type="audio/mpeg" />
+        <source src="/assets/audio/barca-anthem-compress.mp3" type="audio/mpeg" />
       </audio>
 
-      <button onClick={toggleMusic} className="fixed bottom-4 right-4 z-50 rounded-full bg-black px-4 py-2 text-white">
-        {playing ? "🔇 Mute" : "🔊 Play"}
+      <button onClick={toggleMusic} className="fixed bottom-4 right-4 z-50 rounded-full bg-accent px-4 py-2 text-secondary cursor-pointer">
+        {playing ? <p>Mute Anthem</p> : "Play Anthem"}
       </button>
     </>
   );

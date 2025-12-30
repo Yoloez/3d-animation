@@ -17,9 +17,10 @@ import BackgroundMusic from "./components/BackgroundMusic";
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [showNav, setShowNav] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -68,6 +69,21 @@ export default function Home() {
           refreshPriority: 1,
         },
       });
+
+      // Animate title dengan zoom out dan fade out
+      if (titleRef.current) {
+        gsap.to(titleRef.current, {
+          scale: 3,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "80% top",
+            scrub: 1,
+            markers: false,
+          },
+        });
+      }
 
       // Animate menggunakan dummy object untuk kontrol yang lebih smooth
       const obj = { progress: 0 };
@@ -181,7 +197,7 @@ export default function Home() {
 
           <video
             ref={videoRef}
-            src="/assets/videos/camp-nou-timelapse.mp4"
+            src="/assets/videos/bg-gsap.mp4"
             muted
             playsInline
             className="h-full w-full object-cover transition-opacity duration-700"
@@ -198,12 +214,20 @@ export default function Home() {
             controlsList="nodownload noplaybackrate"
             crossOrigin="anonymous"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-primary" />
+
+          {/* FC Barcelona Title */}
+          <div ref={titleRef} className="absolute inset-0 z-20 flex items-center flex-col justify-center pointer-events-none">
+            <h1 className="text-7xl md:text-9xl font-black text-white tracking-wider">FC BARCELONA</h1>
+            <Image src={"/assets/images/club/fc-barcelona.svg"} alt="barca" height={100} width={100} />
+          </div>
         </div>
       </div>
 
       {/* Hero Section */}
+      <div className="h-50 bg-linear-to-b from-primary to-primary"></div>
       <section id="trio-hero" className="relative h-screen overflow-hidden">
+        <div className="absolute inset-0 z-10 bg-linear-to-b from-primary/90 h-10 via-black/40 to-transparent" />
         <Image src={trio} alt="Barca" fill priority className="object-cover" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-primary" />
         <div className="relative z-10 flex h-full items-end justify-center pb-24 text-white">

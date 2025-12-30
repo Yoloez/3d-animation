@@ -42,11 +42,12 @@ const cardData = [
   },
   {
     id: 5,
-    title: "vs Real Madrid (4-3)",
+    title: "vs Real Madrid (0-4)",
     description: "Relive the best moments from the match.",
-    staticImage: "/assets/images/vs-madrid-4-3.webp",
-    youtubeEmbedId: "fra9Ps3xzKM",
+    staticImage: "/assets/images/vs-madrid-4-0.webp",
+    youtubeEmbedId: "AfpItQBKl04",
   },
+
   {
     id: 6,
     title: "vs Inter Milan 1st Leg (3-3)",
@@ -63,10 +64,10 @@ const cardData = [
   },
   {
     id: 8,
-    title: "vs Real Madrid (0-4)",
+    title: "vs Real Madrid (4-3)",
     description: "Relive the best moments from the match.",
-    staticImage: "/assets/images/vs-madrid-4-0.webp",
-    youtubeEmbedId: "AfpItQBKl04",
+    staticImage: "/assets/images/vs-madrid-4-3.webp",
+    youtubeEmbedId: "fra9Ps3xzKM",
   },
 ];
 
