@@ -24,7 +24,7 @@ export default function BackgroundMusic() {
         <source src="/assets/audio/barca-anthem-compress.mp3" type="audio/mpeg" />
       </audio>
 
-      <button onClick={toggleMusic} className="fixed bottom-4 right-4 z-50 rounded-full bg-accent px-4 py-2 text-secondary cursor-pointer">
+      <button onClick={toggleMusic} className="fixed bottom-4 border-secondary border right-4 z-50 rounded-full bg-accent px-4 py-2 text-secondary cursor-pointer">
         {playing ? <p>Mute Anthem</p> : "Play Anthem"}
       </button>
     </>

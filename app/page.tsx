@@ -12,6 +12,7 @@ import type {} from "gsap/ScrollTrigger";
 import ScrollVelocity from "@/components/ScrollVelocity";
 import Standings from "./components/Standings";
 import BackgroundMusic from "./components/BackgroundMusic";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -326,6 +327,7 @@ export default function Home() {
       <About onScrollStateChange={setShowNav} />
       <Standings />
       <BackgroundMusic />
+      <Footer />
       {/* <Logo /> */}
 
       <style jsx>{`
