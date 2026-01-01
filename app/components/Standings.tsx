@@ -150,7 +150,7 @@ const Standings = () => {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center font-black text-slate-900 shadow-lg">{team.pos}</div>
                       <div className="flex items-center gap-2">
-                        <span className="text-2xl">{team.logo}</span>
+                        <Image src={team.logo} alt={team.club} width={22} height={22} className="w-8 h-8  object-contain" />
                         <span className="text-white font-bold">{team.club}</span>
                       </div>
                     </div>
