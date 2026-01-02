@@ -20,7 +20,7 @@ const Standings = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   const headerRef = useRef(null);
-  const rowRefs = useRef([]);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const titleRef = useRef(null);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const Standings = () => {
                 className={`
                   relative rounded-2xl transition-all duration-300 cursor-pointer
                   ${getZoneBorder(team.zone)}
-                  bg-gradient-to-r from-primary/60 to-primary/40 backdrop-blur-md
+                  bg-linear-to-r from-primary/60 to-primary/40 backdrop-blur-md
                   border-2 border-secondary/20 hover:border-secondary
                   shadow-xl
                 `}

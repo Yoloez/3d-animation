@@ -294,9 +294,7 @@ export default function Home() {
                 transformStyle: "preserve-3d",
                 perspective: "1000px",
               }}
-            >
-              <Image src={"/assets/images/club/fc-barcelona.svg"} alt="barca" height={100} width={100} className="logo-3d z-1000" />
-            </div>
+            ></div>
           </div>
         </div>
       </div>
