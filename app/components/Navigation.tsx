@@ -23,7 +23,7 @@ export default function Navigation({ show }: NavigationProps) {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${show ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
       <div className={`mx-auto max-w-7xl transition-all duration-300 ${scrolled ? "py-3" : "py-5"}`}>
         <div
-          className={`mx-4 rounded-2xl backdrop-blur-md bg-primary/30 border border-white/20 shadow-xl transition-all duration-300 ${scrolled ? "bg-primary/80" : ""}`}
+          className={`mx-4 rounded-2xl backdrop-blur-md bg-primary/30 border border-secondary shadow-xl transition-all duration-300 ${scrolled ? "bg-primary/80" : ""}`}
           style={{
             boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
           }}

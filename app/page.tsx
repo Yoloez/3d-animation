@@ -13,6 +13,7 @@ import ScrollVelocity from "@/components/ScrollVelocity";
 import Standings from "./components/Standings";
 import BackgroundMusic from "./components/BackgroundMusic";
 import Footer from "./components/Footer";
+import PageLoader from "./components/PageLoader";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -247,7 +248,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <PageLoader minLoadTime={2500}>
       <Navigation show={showNav} />
 
       {/* Video Scroll Section */}
@@ -426,6 +427,6 @@ export default function Home() {
           animation: logo-glow 1.5s ease-in-out infinite;
         }
       `}</style>
-    </>
+    </PageLoader>
   );
 }

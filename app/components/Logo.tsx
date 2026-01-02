@@ -109,7 +109,7 @@ function HoverCard({ title, description, staticImage, youtubeEmbedId, onClick }:
 
   return (
     <div
-      className="group w-full cursor-pointer overflow-hidden relative h-180 rounded-md shadow-xl flex flex-col justify-end border border-transparent dark:border-neutral-800 transition-all duration-500 hover:shadow-2xl"
+      className="group w-full cursor-pointer overflow-hidden relative h-180 rounded-md shadow-xl flex flex-col justify-end border border-secondary dark:border-neutral-800 transition-all duration-500 hover:shadow-2xl"
       onMouseEnter={() => setShowVideo(true)}
       onMouseLeave={() => setShowVideo(false)}
       onClick={onClick}

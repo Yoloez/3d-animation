@@ -13,7 +13,7 @@ export default function BackgroundMusic() {
       audioRef.current.pause();
     } else {
       audioRef.current.play();
-    }
+    } 
 
     setPlaying(!playing);
   };

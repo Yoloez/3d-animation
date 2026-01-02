@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 
 const standingsData = [
-  { pos: 1, club: "Barcelona", mp: 38, w: 28, d: 4, l: 6, gf: 102, ga: 39, gd: 63, pts: 88, form: ["W", "W", "W", "L", "W"], zone: "champions" },
-  { pos: 2, club: "Real Madrid", mp: 38, w: 26, d: 6, l: 6, gf: 78, ga: 38, gd: 40, pts: 84, form: ["W", "L", "W", "W", "W"], zone: "europa" },
-  { pos: 3, club: "Atlético Madrid", mp: 38, w: 22, d: 10, l: 6, gf: 68, ga: 30, gd: 38, pts: 76, form: ["D", "L", "W", "W", "W"], zone: "conference" },
-  { pos: 4, club: "Sevilla", mp: 38, w: 20, d: 8, l: 10, gf: 62, ga: 45, gd: 17, pts: 68, form: ["W", "D", "W", "L", "W"], zone: "conference" },
-  { pos: 5, club: "Real Sociedad", mp: 38, w: 18, d: 12, l: 8, gf: 55, ga: 38, gd: 17, pts: 66, form: ["D", "W", "W", "W", "D"], zone: "normal" },
+  { pos: 1, logo: "/assets/images/club/fc-barcelona.svg", club: "Barcelona", mp: 38, w: 28, d: 4, l: 6, gf: 102, ga: 39, gd: 63, pts: 88, form: ["W", "W", "W", "L", "W"], zone: "champions" },
+  { pos: 2, logo: "/assets/images/club/rm.svg", club: "Real Madrid", mp: 38, w: 26, d: 6, l: 6, gf: 78, ga: 38, gd: 40, pts: 84, form: ["W", "L", "W", "W", "W"], zone: "europa" },
+  { pos: 3, logo: "/assets/images/club/atm.svg", club: "Atlético Madrid", mp: 38, w: 22, d: 10, l: 6, gf: 68, ga: 30, gd: 38, pts: 76, form: ["D", "L", "W", "W", "W"], zone: "conference" },
+  { pos: 4, logo: "/assets/images/club/bilbao.svg", club: "Athletic Bilbao", mp: 38, w: 20, d: 8, l: 10, gf: 62, ga: 45, gd: 17, pts: 68, form: ["W", "D", "W", "L", "W"], zone: "conference" },
+  { pos: 5, logo: "/assets/images/club/villareal.svg", club: "Villarreal", mp: 38, w: 18, d: 12, l: 8, gf: 55, ga: 38, gd: 17, pts: 66, form: ["D", "W", "W", "W", "D"], zone: "normal" },
 ];
 
-const FormIndicator = ({ result }) => {
+const FormIndicator = ({ result }: { result: string }) => {
   const bgColor = result === "W" ? "bg-third" : result === "L" ? "bg-accent" : "bg-secondary";
   const textColor = result === "W" ? "text-primary" : "text-white";
   return <div className={`w-7 h-7 rounded-full ${bgColor} ${textColor} flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-300`}>{result}</div>;
@@ -44,7 +45,7 @@ const Standings = () => {
     });
 
     // Mouse parallax
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 20;
       const y = (e.clientY / window.innerHeight - 0.5) * 20;
       setMousePos({ x, y });
@@ -61,7 +62,7 @@ const Standings = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const handleRowHover = (index, isEnter) => {
+  const handleRowHover = (index: number, isEnter: boolean) => {
     const row = rowRefs.current[index];
     if (isEnter) {
       gsap.to(row, {
@@ -84,27 +85,29 @@ const Standings = () => {
     }
   };
 
-  const getZoneBorder = (zone) => {
-    switch (zone) {
-      case "champions":
-        return "border-l-4 border-l-secondary";
-      case "europa":
-        return "border-l-4 border-l-accent";
-      case "conference":
-        return "border-l-4 border-l-third";
-      default:
-        return "border-l-4 border-l-primary/30";
+  const getZoneBorder = (zone: string) => {
+    switch (
+      zone
+      // case "champions":
+      //   return "border-l-4 border-l-secondary";
+      // case "europa":
+      //   return "border-l-4 border-l-accent";
+      // case "conference":
+      //   return "border-l-4 border-l-third";
+      // default:
+      //   return "border-l-4 border-l-primary/30";
+    ) {
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary to-accent/80 py-12 px-4 overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-primary via-primary to-accent py-12 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto perspective-[2000px]">
         {/* Header */}
-        <div ref={titleRef} className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-black text-secondary mb-4 tracking-tight drop-shadow-2xl">LaLiga Standings</h1>
-          <div className="inline-block px-8 py-3 bg-accent rounded-full border-2 border-secondary shadow-2xl">
-            <p className="text-secondary text-xl font-bold">2024/2025 Season</p>
+        <div ref={titleRef} className="text-center mt-20 mb-12 gap-4 flex flex-col md:flex-col items-center">
+          <h1 className="text-6xl md:text-5xl font-black text-secondary mb-4 tracking-tight drop-shadow-2xl">LaLiga Standings</h1>
+          <div className="inline-block px-4 py-2 bg-accent rounded-full border-2 border-secondary shadow-2xl">
+            <p className="text-secondary text-lg font-bold">2024/2025 Season</p>
           </div>
         </div>
 
@@ -128,7 +131,9 @@ const Standings = () => {
             {standingsData.map((team, index) => (
               <div
                 key={team.pos}
-                ref={(el) => (rowRefs.current[index] = el)}
+                ref={(el) => {
+                  rowRefs.current[index] = el;
+                }}
                 className={`
                   relative rounded-2xl transition-all duration-300 cursor-pointer
                   ${getZoneBorder(team.zone)}
@@ -149,7 +154,7 @@ const Standings = () => {
 
                   {/* Club */}
                   <div className="col-span-3 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-2xl border-2 border-secondary">⚽</div>
+                    <Image src={team.logo} alt={team.club} width={25} height={25} />
                     <span className="text-white font-bold text-lg">{team.club}</span>
                   </div>
 
@@ -226,20 +231,6 @@ const Standings = () => {
           </div>
 
           {/* Legend */}
-          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center gap-2 px-4 py-2 bg-primary/60 rounded-lg border-2 border-secondary/30">
-              <div className="w-4 h-4 bg-secondary rounded"></div>
-              <span className="text-white font-semibold">Champions League</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-primary/60 rounded-lg border-2 border-accent/30">
-              <div className="w-4 h-4 bg-accent rounded"></div>
-              <span className="text-white font-semibold">Europa League</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-primary/60 rounded-lg border-2 border-third/30">
-              <div className="w-4 h-4 bg-third rounded"></div>
-              <span className="text-white font-semibold">Conference League</span>
-            </div>
-          </div>
         </div>
       </div>
 
