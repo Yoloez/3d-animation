@@ -92,6 +92,7 @@ export default function Loading() {
         >
           FC BARCELONA
         </h2>
+        <h3 className=" text-secondary/60 tracking-wider text-6xl">Press F11 For Better Experience</h3>
 
         {/* Progress Bar */}
         <div className="w-48 md:w-64 h-1 bg-secondary/20 rounded-full overflow-hidden">
@@ -104,7 +105,7 @@ export default function Loading() {
           />
         </div>
 
-        <p className="text-secondary/60 text-sm tracking-wider animate-pulse">Loading Experience...</p>
+        <p className="text-secondary/60 text-sm tracking-wider animate-pulse">Press F11 For Better Experience</p>
       </div>
       {/* Floating Particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

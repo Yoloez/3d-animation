@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface NavigationProps {
   show: boolean;
@@ -30,9 +31,9 @@ export default function Navigation({ show }: NavigationProps) {
         >
           <div className="flex items-center justify-between px-6 py-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-linear-to-br from-secondary to-yellow-500 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-primary font-bold text-md">FC</span>
+            <Link href="/" className="flex items-center space-x-2 group">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <Image src="/assets/images/club/fc-barcelona.svg" alt="FC Barcelona" width={24} height={24} />
               </div>
               <span className="text-white font-bold text-lg hidden sm:block group-hover:text-secondary transition-colors duration-300">BARÇA</span>
             </Link>
@@ -59,9 +60,13 @@ export default function Navigation({ show }: NavigationProps) {
 
             {/* CTA Button */}
             <div className="flex items-center space-x-4">
-              <button className="hidden sm:block px-6 py-0 bg-linear-to-r from-secondary to-yellow-100 text-primary font-bold rounded-full hover:scale-105 hover:shadow-lg hover:shadow-secondary/50 transition-all duration-300">
-                Join Fan Club
-              </button>
+              <Link
+                href={"https://www.fcbarcelona.com/"}
+                target="_blank"
+                className="hidden sm:block px-6 py-2 bg-primary text-white rounded-full hover:scale-105 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 cursor-pointer border-accent border-2"
+              >
+                Visit Official
+              </Link>
 
               {/* Mobile Menu Button */}
               <button className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-300">

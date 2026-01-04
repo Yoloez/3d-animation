@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaXTwitter, FaInstagram, FaYoutube, FaTiktok, FaFacebookF } from "react-icons/fa6";
+import { FaXTwitter, FaInstagram, FaYoutube, FaTiktok, FaFacebookF, FaGithub } from "react-icons/fa6";
 
 const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
@@ -175,11 +175,13 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-secondary/10">
-          <p className="text-secondary/40 text-sm">© {currentYear} FC Barcelona. All rights reserved.</p>
+          <p className="text-secondary/40 text-sm">© {currentYear} Made with love by Yoloez</p>
           <div className="flex items-center gap-6">
             <FooterLink href="/privacy">Privacy Policy</FooterLink>
             <FooterLink href="/terms">Terms of Service</FooterLink>
-            <FooterLink href="/cookies">Cookie Settings</FooterLink>
+            <Link href="https://github.com/Yoloez" target="_blank">
+              <FaGithub size={24} color="#fcc52b" />
+            </Link>
           </div>
         </div>
       </div>

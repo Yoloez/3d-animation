@@ -14,6 +14,7 @@ import Standings from "./components/Standings";
 import BackgroundMusic from "./components/BackgroundMusic";
 import Footer from "./components/Footer";
 import PageLoader from "./components/PageLoader";
+import Thropy from "./components/Thropy";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -23,7 +24,17 @@ export default function Home() {
   const logoTargetRef = useRef<HTMLDivElement>(null);
   const [showNav, setShowNav] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isPageReady, setIsPageReady] = useState(false);
   const animationFrameRef = useRef<number | null>(null);
+
+  // Callback when PageLoader finishes
+  const handleLoadComplete = () => {
+    setIsPageReady(true);
+    // Refresh ScrollTrigger to recalculate positions
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  };
 
   useEffect(() => {
     const video = videoRef.current;
@@ -76,13 +87,15 @@ export default function Home() {
       // Animate title dengan zoom out dan fade out
       if (titleRef.current) {
         gsap.to(titleRef.current, {
-          scale: 3,
+          scale: 1.5,
           opacity: 0,
+          y: -100,
+          filter: "blur(10px)",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: "80% top",
-            scrub: 1,
+            end: "90% top",
+            scrub: 1.5,
             markers: false,
           },
         });
@@ -248,7 +261,7 @@ export default function Home() {
   }, []);
 
   return (
-    <PageLoader minLoadTime={2500}>
+    <PageLoader minLoadTime={2500} onLoadComplete={handleLoadComplete}>
       <Navigation show={showNav} />
 
       {/* Video Scroll Section */}
@@ -326,6 +339,7 @@ export default function Home() {
       <About onScrollStateChange={setShowNav} />
       <Standings />
       <BackgroundMusic />
+      {/* <Thropy /> */}
       <Footer />
       {/* <Logo /> */}
 
