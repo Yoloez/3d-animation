@@ -137,7 +137,7 @@ export default function Footer() {
 
         {/* 3D Animated Title */}
         <div className="relative py-12 border-t border-secondary/10">
-          <div className="flex justify-center items-center" style={{ perspective: "1000px" }}>
+          <div className="flex justify-center items-center text-center" style={{ perspective: "1000px" }}>
             <h2
               ref={titleRef}
               onMouseMove={handleMouseMove}

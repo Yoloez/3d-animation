@@ -132,7 +132,7 @@ export default function PageLoader({ children, minLoadTime = 2000, onLoadComplet
           {/* Loading Text & Progress */}
           <div className="mt-12 flex flex-col items-center gap-4 z-10">
             <h2
-              className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-linear-to-r from-secondary via-accent to-secondary tracking-widest"
+              className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-secondary tracking-widest"
               style={{
                 backgroundSize: "200% 100%",
                 animation: "shimmer 2s linear infinite",

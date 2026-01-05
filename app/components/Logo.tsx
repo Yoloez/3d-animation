@@ -47,7 +47,6 @@ const cardData = [
     staticImage: "/assets/images/vs-madrid-4-0.webp",
     youtubeEmbedId: "AfpItQBKl04",
   },
-
   {
     id: 6,
     title: "vs Inter Milan 1st Leg (3-3)",
@@ -138,16 +137,6 @@ function HoverCard({ title, description, staticImage, youtubeEmbedId, onClick }:
       {/* Dark overlay on hover */}
       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-20" />
 
-      {/* Click indicator */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
-        {/* <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-4"> */}
-        {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg> */}
-        {/* </div> */}
-      </div>
-
       {/* Content */}
       <div className="relative z-50 p-4">
         <h1 className="font-bold text-xl md:text-3xl text-gray-50">{title}</h1>
@@ -163,6 +152,7 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
   const [selectedCard, setSelectedCard] = useState<(typeof cardData)[0] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -170,32 +160,45 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
 
     if (!container || !cards) return;
 
-    // Wait for next frame to ensure DOM is fully rendered
+    // Cleanup hanya ScrollTrigger milik komponen ini
+    const cleanup = () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+    };
+
+    cleanup();
+
+    // Setup animation dengan delay lebih panjang untuk menunggu animasi page.tsx selesai
     const setupAnimation = () => {
-      // Calculate scroll distance with proper padding consideration
+      // Calculate total scroll amount
       const getScrollAmount = () => {
         const cardsWidth = cards.scrollWidth;
         const windowWidth = window.innerWidth;
         return -(cardsWidth - windowWidth);
       };
 
-      // Create horizontal scroll animation
-      const tween = gsap.to(cards, {
-        x: getScrollAmount,
+      const scrollAmount = getScrollAmount();
+
+      // Create animation
+      const animation = gsap.to(cards, {
+        x: scrollAmount,
         ease: "none",
-        duration: 3,
       });
 
-      // Create ScrollTrigger with proper end calculation
-      ScrollTrigger.create({
+      // Create ScrollTrigger dan simpan referensinya
+      scrollTriggerRef.current = ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: () => `+=${getScrollAmount() * -1}`, // Proper end point based on scroll distance
+        end: () => `+=${Math.abs(scrollAmount) + 100}`,
         pin: true,
-        scrub: 1,
-        animation: tween,
-        invalidateOnRefresh: true,
+        scrub: 1.5,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
+        animation: animation,
+        // Tambahkan ID unik untuk tracking
+        id: "horizontal-scroll-gallery",
         onEnter: () => onScrollStateChange?.(false),
         onLeave: () => onScrollStateChange?.(true),
         onEnterBack: () => onScrollStateChange?.(false),
@@ -203,14 +206,24 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
       });
     };
 
-    // Small delay to ensure proper measurement
-    const timer = setTimeout(setupAnimation, 100);
+    // Delay lebih lama untuk menghindari konflik dengan animasi page.tsx
+    const timer = setTimeout(setupAnimation, 500);
+
+    // Handle window resize
+    const handleResize = () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.refresh();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
       clearTimeout(timer);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      window.removeEventListener("resize", handleResize);
+      cleanup();
     };
-  }, []);
+  }, [onScrollStateChange]);
 
   const handleCardClick = (card: (typeof cardData)[0]) => {
     setSelectedCard(card);
@@ -224,29 +237,24 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
 
   return (
     <>
-      <div ref={containerRef} className="relative h-screen overflow-hidden">
-        {/* Header dengan gradient */}
-
+      <div ref={containerRef} className="relative h-screen overflow-hidden bg-primary">
         {/* Horizontal scrolling cards container */}
-        <div ref={cardsRef} className=" top-0 left-0 h-full flex items-center right-10 gap-8 px-8" style={{ willChange: "transform" }}>
-          {cardData.map((card, index) => (
+        <div ref={cardsRef} className="absolute top-0 left-0 h-full flex items-center gap-6 pl-8" style={{ willChange: "transform" }}>
+          {cardData.map((card) => (
             <div
               key={card.id}
-              className="shrink-0"
+              className="flex-shrink-0"
               style={{
-                width: "clamp(300px, 80vw, 500px)",
-                animationDelay: `${index * 0.1}s`,
+                width: "clamp(280px, 70vw, 450px)",
               }}
             >
               <HoverCard title={card.title} description={card.description} staticImage={card.staticImage} youtubeEmbedId={card.youtubeEmbedId} onClick={() => handleCardClick(card)} />
             </div>
           ))}
 
-          {/* End spacer */}
-          <div className="shrink-0 w-8" />
+          {/* End spacer untuk padding akhir */}
+          <div className="flex-shrink-0 w-8" />
         </div>
-
-        {/* Scroll indicator */}
       </div>
 
       {/* Modal */}
