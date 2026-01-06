@@ -173,3 +173,15 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes flip-horizontal {
+  0% {
+    transform: translate(-50%, -50%) scaleX(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scaleX(-1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleX(1);
+  }
+}

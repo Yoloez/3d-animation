@@ -50,7 +50,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-primary overflow-hidden">
+    <footer id="footer" className="relative bg-primary overflow-hidden">
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" />

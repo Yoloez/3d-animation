@@ -37,10 +37,10 @@ export default function Navigation({ show }: NavigationProps) {
   }, [isMenuOpen]);
 
   const navLinks = [
-    { href: "#team", label: "Team" },
-    { href: "#matches", label: "Matches" },
-    { href: "#news", label: "News" },
+    { href: "#team", label: "Home" },
+    { href: "#standings", label: "Standings" },
     { href: "#gallery", label: "Gallery" },
+    { href: "#footer", label: "Footer" },
   ];
 
   return (

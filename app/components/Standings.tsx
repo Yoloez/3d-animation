@@ -11,9 +11,9 @@ const standingsData = [
 ];
 
 const FormIndicator = ({ result }: { result: string }) => {
-  const bgColor = result === "W" ? "bg-third" : result === "L" ? "bg-accent" : "bg-secondary";
+  const bgColor = result === "W" ? "bg-third " : result === "L" ? "bg-accent" : "bg-secondary";
   const textColor = result === "W" ? "text-primary" : "text-white";
-  return <div className={`w-7 h-7 rounded-full ${bgColor} ${textColor} flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-300`}>{result}</div>;
+  return <div className={`w-5 h-5 sm:w-8 sm:h-8 rounded-full ${bgColor} ${textColor} flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-300`}>{result}</div>;
 };
 
 const Standings = () => {
@@ -101,7 +101,7 @@ const Standings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-primary via-primary to-accent py-12 px-4 overflow-hidden">
+    <div id="standings" className="min-h-screen bg-linear-to-br from-primary via-primary to-accent py-12 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto perspective-[2000px]">
         {/* Header */}
         <div ref={titleRef} className="text-center mt-20 mb-12 gap-4 flex flex-col md:flex-col items-center">
@@ -185,13 +185,13 @@ const Standings = () => {
                 <div className="lg:hidden px-4 py-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center font-black text-secondary shadow-lg border-2 border-secondary">{team.pos}</div>
+                      <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl bg-accent flex items-center justify-center font-black text-secondary shadow-lg border-2 border-secondary">{team.pos}</div>
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-xl border-2 border-secondary">⚽</div>
-                        <span className="text-white font-bold text-base">{team.club}</span>
+                        <Image src={team.logo} alt={team.club} width={25} height={25} />
+                        <span className="text-white font-bold text-md">{team.club}</span>
                       </div>
                     </div>
-                    <div className="px-4 py-2 bg-secondary rounded-xl text-primary font-black text-lg shadow-lg border-2 border-accent">{team.pts}</div>
+                    <div className="px-2 py-1 sm:px-4 sm:py-2 bg-secondary rounded-xl text-primary font-black text-sm sm:text-lg shadow-lg border-2 border-accent">{team.pts}</div>
                   </div>
 
                   <div className="grid grid-cols-5 gap-2 text-sm">

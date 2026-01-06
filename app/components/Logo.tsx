@@ -160,7 +160,7 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
 
     if (!container || !cards) return;
 
-    // Cleanup hanya ScrollTrigger milik komponen ini
+    // Cleanup ONLY this component's ScrollTrigger
     const cleanup = () => {
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
@@ -170,8 +170,11 @@ export default function Logo({ onScrollStateChange }: { onScrollStateChange?: (i
 
     cleanup();
 
-    // Setup animation dengan delay lebih panjang untuk menunggu animasi page.tsx selesai
+    // Setup animation with delay to allow page animations to initialize first
     const setupAnimation = () => {
+      // Double-check cleanup before creating new trigger
+      cleanup();
+
       // Calculate total scroll amount
       const getScrollAmount = () => {
         const cardsWidth = cards.scrollWidth;

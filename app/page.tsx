@@ -41,8 +41,12 @@ export default function Home() {
 
     // Wait for page to be ready
     const initAnimations = () => {
-      // Kill any existing ScrollTriggers
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // Kill ONLY hero animation ScrollTriggers (not all, to preserve other components)
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.id === "hero-3d-animation") {
+          trigger.kill();
+        }
+      });
 
       // Main scroll animation timeline
       const mainTl = gsap.timeline({
@@ -245,7 +249,9 @@ export default function Home() {
       </div>
 
       {/* Transition Gradient */}
-      <div className=" z-100000 h-50 bg-linear-to-b from-primary to-primary" />
+      <div className="relative z-100000 h-50 bg-linear-to-b from-primary to-primary">
+        <Image src="/assets/images/club/fc-barcelona.svg" alt="Camp Nou Stadium" width={120} height={120} priority className="absolute top-1/2 left-1/2 animate-[flip-horizontal_2s_ease-in-out_infinite]" />
+      </div>
 
       {/* Hero Section - Trio Image */}
       <section id="trio-hero" className="relative h-screen overflow-hidden">
@@ -277,6 +283,18 @@ export default function Home() {
         .animate-fade-up {
           animation: fade-up 0.5s ease-out 0.3s forwards;
           opacity: 0;
+        }
+
+        @keyframes flip-horizontal {
+          0% {
+            transform: translate(-50%, -50%) scaleX(1);
+          }
+          50% {
+            transform: translate(-50%, -50%) scaleX(-1);
+          }
+          100% {
+            transform: translate(-50%, -50%) scaleX(1);
+          }
         }
       `}</style>
     </PageLoader>
